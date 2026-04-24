@@ -17,7 +17,7 @@ jobs:
           chmod +x ./bcftools
 
       - name: Install Python deps
-        run: python3 -m pip install pyinstaller
+        run:  python3 -m pip install pyinstaller --break-system-packages
 
       - name: Build Intel app
         run: |
@@ -50,7 +50,7 @@ jobs:
           chmod +x ./bcftools
 
       - name: Install Python deps
-        run: python3 -m pip install pyinstaller
+        run: python3 -m pip install pyinstaller --break-system-packages
 
       - name: Build Apple Silicon app
         run: |
