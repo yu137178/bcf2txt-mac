@@ -1,0 +1,75 @@
+name: Build macOS App
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-intel:
+    runs-on: macos-13
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get bcftools Intel
+        run: |
+          curl -fsSL "https://github.com/samtools/bcftools/releases/download/1.21/bcftools-1.21-osx.tar.bz2" -o bcftools.tar.bz2
+          tar xjf bcftools.tar.bz2
+          mv bcftools-1.21 bcftools
+          rm bcftools.tar.bz2
+          chmod +x bcftools
+
+      - name: Install Python deps
+        run: pip3 install pyinstaller
+
+      - name: Build Intel app
+        run: |
+          pyinstaller --onefile --windowed \
+            --name "BCF转文本工具_Intel" \
+            --add-binary "bcftools:." \
+            bcf2txt_gui_mac.py
+
+      - name: Zip Intel app
+        run: |
+          cd dist
+          zip -r "../BCF转文本工具_Intel.zip" "BCF转文本工具_Intel.app"
+
+      - name: Upload Intel artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: BCF转文本工具_Intel
+          path: BCF转文本工具_Intel.zip
+
+  build-arm64:
+    runs-on: macos-14
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get bcftools Apple Silicon
+        run: |
+          curl -fsSL "https://github.com/samtools/bcftools/releases/download/1.21/bcftools-1.21-osx.tar.bz2" -o bcftools.tar.bz2
+          tar xjf bcftools.tar.bz2
+          mv bcftools-1.21 bcftools
+          rm bcftools.tar.bz2
+          chmod +x bcftools
+
+      - name: Install Python deps
+        run: pip3 install pyinstaller
+
+      - name: Build Apple Silicon app
+        run: |
+          pyinstaller --onefile --windowed \
+            --name "BCF转文本工具_ARM64" \
+            --add-binary "bcftools:." \
+            bcf2txt_gui_mac.py
+
+      - name: Zip ARM64 app
+        run: |
+          cd dist
+          zip -r "../BCF转文本工具_ARM64.zip" "BCF转文本工具_ARM64.app"
+
+      - name: Upload ARM64 artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: BCF转文本工具_ARM64
+          path: BCF转文本工具_ARM64.zip
