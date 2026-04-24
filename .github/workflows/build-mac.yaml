@@ -10,13 +10,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Get bcftools Intel
+      - name: Install bcftools via Homebrew
         run: |
-          curl -fsSL "https://github.com/samtools/bcftools/releases/download/1.21/bcftools-1.21-osx.tar.bz2" -o bcftools.tar.bz2
-          tar xjf bcftools.tar.bz2
-          mv bcftools-1.21 bcftools
-          rm bcftools.tar.bz2
-          chmod +x bcftools
+          brew install bcftools
+          cp $(which bcftools) ./bcftools
+          chmod +x ./bcftools
 
       - name: Install Python deps
         run: pip3 install pyinstaller
@@ -45,13 +43,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Get bcftools Apple Silicon
+      - name: Install bcftools via Homebrew
         run: |
-          curl -fsSL "https://github.com/samtools/bcftools/releases/download/1.21/bcftools-1.21-osx.tar.bz2" -o bcftools.tar.bz2
-          tar xjf bcftools.tar.bz2
-          mv bcftools-1.21 bcftools
-          rm bcftools.tar.bz2
-          chmod +x bcftools
+          brew install bcftools
+          cp $(which bcftools) ./bcftools
+          chmod +x ./bcftools
 
       - name: Install Python deps
         run: pip3 install pyinstaller
